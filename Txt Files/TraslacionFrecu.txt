@@ -2,21 +2,20 @@
 clear all;
 close all;
 clc;
-
 %Traslación en frecuencia
-Fs=100;       %Frecuencia de muestreo
+Fs=200;       %Frecuencia de muestreo
 t=-1:1/Fs:2;  %Vector de tiempo
 L=3000;       %Longitud de la señal 
-A = 1
-s =((4/3)*(exp(1i*t*A))-2/3);%
-Y=fft(s,L);     %Aplicando transformada rápida
+A=3        %Escalar
+s=((4/3)*t-2/3).*(exp(2i*pi*t*A));
+Y=fft(s,L);    %Transformada rápida
 
 plot(t,s);
-title('Gráfica traslación ')
+title('Gráfica ')
 xlabel('Tiempo(t)');
 ylabel('x(t)');
 grid on
-figure 
+figure   
 
 P=abs(Y/Fs);
 f=linspace(0,Fs,numel(P));
@@ -30,17 +29,16 @@ grid on
 
 
 syms t f;       %Variables simbólicas
-e=1
-xtt=((4/3)*(exp(1i*t*e))-2/3);
-ytt=int(xtt*exp(-1i*2*pi*f*t),t,-1,2); %Transformada de Fourier teórica
+e=3
+xtf=exp(2*pi*1i*t*e)*((4/3)*t-2/3);
+ytf=int(xtf*exp(-1i*2*pi*f*t),t,-1,2); %Transformada de Fourier teórica
 hold on         %sobreposición
-fplot(f,abs(ytt),[0 5])
+fplot(f,abs(ytf))
 legend('FFT','Transformada teórica')
 grid on
 figure
 
 %-----Gráfica espectro de magnitud
-ezplot(abs(ytt));
+ezplot(abs(ytf));
 title('Gráfica espectro de magnitud- Translación en Frecuencia')
 grid on
-
