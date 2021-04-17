@@ -1,0 +1,41 @@
+%-----TRANSFORMADA DE FOURIER
+clear all;
+close all;
+clc;
+
+Fs=100;         %Frecuencia de muestreo
+t=-1:1/Fs:2;    %Vector de tiempo 
+L=3000;         %Longitud de la señal 
+X=(4/3)*t-2/3;  %Señal original
+Y=fft(X,L);     %Aplicando transformada rápida
+
+plot(t,X)
+title('Gráfica señal en el dominio del tiempo')
+xlabel('Tiempo(t)')
+ylabel('X(t)')
+grid on
+figure
+
+P=abs(Y/Fs);
+f=linspace(0,Fs,numel(P));
+
+plot(f,P)
+axis ([0 5 0 3])
+title('Gráfica transformada rápida vs transformada teórica')
+xlabel('Frecuencia(rad/s)')
+ylabel('|X(f)|')
+grid on
+
+syms t f;       %Variables simbólicas
+x=(4/3)*t-2/3;  %Señal original
+m=int(x*exp(-1i*2*pi*f*t),t,-1,2) %Transformada de Fourier teórica
+hold on         %sobreposición
+fplot(f,abs(m),[0 5])
+legend('FFT','Transformada teórica')
+grid on
+figure
+
+%-----Gráfica espectro de magnitud
+ezplot(abs(m));
+title('Gráfica espectro de magnitud')
+grid on
