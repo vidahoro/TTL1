@@ -2,20 +2,21 @@
 clear all;
 close all;
 clc;
-%-----Gráfica señal original-----
+
+%-----Traslación en el tiempo
 Fs=100;
-t=-1:1/Fs:2;
+A=1
+t=-1+A:1/Fs:2+A;
 L=3000;         %Longitud de la señal 
-A=-1
-s=A*((4/3)*t-2/3);
+s=((4/3)*(t-A)-2/3) %Traslación en el t
 Y=fft(s,L);     %Aplicando transformada rápida
 
 plot(t,s);
-title('Gráfica señal original multiplicada por escalar')
+title('Gráfica traslación en el t')
 xlabel('Tiempo(t)');
 ylabel('x(t)');
 grid on
-figure
+figure   
 
 P=abs(Y/Fs);
 f=linspace(0,Fs,numel(P));
@@ -27,19 +28,18 @@ xlabel('Frecuencia(rad/s)')
 ylabel('|X(f)|')
 grid on
 
-
-%-----Multiplicación por escalar
 syms t f;       %Variables simbólicas
-e=-1
-xe= e*((4/3)*t-2/3);  %Señal por escalar
-ye=int(xe*exp(-1i*2*pi*f*t),t,-1,2) %Transformada de Fourier teórica
+e=1;
+xtt=((4/3)*(t-e)-2/3);  %
+ytt=int(xtt*exp(-1i*2*pi*f*t),t,-1+e,2+e) %Transformada de Fourier teórica
 hold on         %sobreposición
-fplot(f,abs(ye),[0 5])
+fplot(f,abs(ytt),[0 5])
 legend('FFT','Transformada teórica')
 grid on
 figure
 
+
 %-----Gráfica espectro de magnitud
-ezplot(abs(ye));
+ezplot(abs(ytt));
 title('Gráfica espectro de magnitud')
 grid on
